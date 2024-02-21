@@ -9,24 +9,26 @@ function App() {
 
   useEffect(() => {
     const storedFiles = JSON.parse(localStorage.getItem("audioFiles")) || [];
+    console.log(storedFiles); // Return nothing
     setFiles(storedFiles);
   }, []);
 
   useEffect(() => {
-    console.log("store...", files);
+    // console.log("store...", files);
     localStorage.setItem("audioFiles", JSON.stringify(files));
   }, [files]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setFiles((prevFiles) => [...prevFiles, file]);
-      saveAudioFile([...files, file]);
+      // setFiles((prevFiles) => [...prevFiles, file]);
+      // saveAudioFile([...files, file]);
+      setFiles((prevFiles) => {
+        const updatedFiles = [...prevFiles, file];
+        localStorage.setItem("audioFiles", JSON.stringify(updatedFiles));
+        return updatedFiles;
+      });
     }
-  };
-
-  const saveAudioFile = (files) => {
-    localStorage.setItem("audioFiles", JSON.stringify(files));
   };
 
   const handleFileSelected = (file) => {
