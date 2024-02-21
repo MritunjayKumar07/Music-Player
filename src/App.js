@@ -19,9 +19,10 @@ function App() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log(file); //return :- File {name: 'indian-trap-132594.mp3', lastModified: 1708435578748, lastModifiedDate: Tue Feb 20 2024 18:56:18 GMT+0530 (India Standard Time), webkitRelativePath: '', size: 2881410, …}
-    setFiles((prevFiles) => [...prevFiles, file]);
-    saveAudioFile([...files, file]);
+    if (file) {
+      setFiles((prevFiles) => [...prevFiles, file]);
+      saveAudioFile([...files, file]);
+    }
   };
 
   const saveAudioFile = (files) => {

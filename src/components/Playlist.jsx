@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import image from "../assert/music.png";
 
 function Playlist({ files, onFileSelected, playName }) {
