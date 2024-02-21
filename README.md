@@ -15,6 +15,6 @@
 - User should be able to play any file from 
 - Use the standard built-in HTML audio player (not a third party player)
 
-## Not Complite
+## Not Complite yet
 - Playlist and the playback should continue to the next file in the playlist upon completion
 - When page is reloaded, load the last playing audio file and continue playing from the last position.

@@ -3,7 +3,7 @@ import image from "../assert/music.png";
 import imagePlay from "../assert/play.png";
 import imageStop from "../assert/pause.png";
 
-function AudioPlayer({ src, onEnded, playName }) {
+function AudioPlayer({ src, onEnded, playName, handleNext, handlePrevious }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const audioRef = React.createRef();
@@ -60,7 +60,7 @@ function AudioPlayer({ src, onEnded, playName }) {
         </div>
 
         <div className="controls">
-          <div className="prev">
+          <div className="prev" onClick={handlePrevious}>
             <svg
               width="30"
               height="30"
@@ -74,11 +74,15 @@ function AudioPlayer({ src, onEnded, playName }) {
               />
             </svg>
           </div>
-          <div className="play" onClick={togglePlayPause} style={{cursor: "pointer" }}>
+          <div
+            className="play"
+            onClick={togglePlayPause}
+            style={{ cursor: "pointer" }}
+          >
             {isPlaying ? (
               <img
                 alt="play"
-                style={{ height: "35px"}}
+                style={{ height: "35px" }}
                 onClick={pauseAudio}
                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAATElEQVR4nO3SsQ2AQAwEQbdC09coBTwNkN0TvJiRnDmxvDMAAHCkK/d6m137n3NAfKAjoUioI6FIqCOhSKgjoUioI6FI6OcJAQDANB4f136PNAKvpQAAAABJRU5ErkJggg=="
               />
@@ -109,7 +113,11 @@ function AudioPlayer({ src, onEnded, playName }) {
               </svg>
             )}
           </div>
-          <div className="next" style={{cursor: "pointer" }}>
+          <div
+            className="next"
+            onClick={handleNext}
+            style={{ cursor: "pointer" }}
+          >
             <svg
               width="29"
               height="30"

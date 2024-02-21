@@ -13,12 +13,14 @@ function App() {
   }, []);
 
   useEffect(() => {
+    console.log("store...", files);
     localStorage.setItem("audioFiles", JSON.stringify(files));
   }, [files]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setFiles([...files, file]);
+    console.log(file); //return :- File {name: 'indian-trap-132594.mp3', lastModified: 1708435578748, lastModifiedDate: Tue Feb 20 2024 18:56:18 GMT+0530 (India Standard Time), webkitRelativePath: '', size: 2881410, …}
+    setFiles((prevFiles) => [...prevFiles, file]);
     saveAudioFile([...files, file]);
   };
 
@@ -32,7 +34,22 @@ function App() {
   };
 
   const handleFileEnded = () => {
-    setCurrentFileIndex((prevIndex) => prevIndex + 1);
+    setCurrentFileIndex((prevIndex) => {
+      const nextIndex = prevIndex + 1;
+      return nextIndex < files.length ? nextIndex : 0;
+    });
+  };
+
+  const handlePrevious = () => {
+    setCurrentFileIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : files.length - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentFileIndex((prevIndex) =>
+      prevIndex < files.length - 1 ? prevIndex + 1 : 0
+    );
   };
 
   const currentFile = files[currentFileIndex];
@@ -47,6 +64,8 @@ function App() {
               src={URL.createObjectURL(currentFile)}
               onEnded={handleFileEnded}
               playName={currentFile}
+              handleNext={handleNext}
+              handlePrevious={handlePrevious}
             />
           </>
         )}
