@@ -3,7 +3,6 @@ import image from "../assert/music.png";
 
 function Playlist({ files, onFileSelected, playName }) {
   const [selectedIndex, setSelectedIndex] = useState(playName.name);
-  console.log("1", playName.name);
 
   return (
     <div id="player01" className="player">
