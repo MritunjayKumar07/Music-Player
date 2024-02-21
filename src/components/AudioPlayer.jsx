@@ -60,7 +60,11 @@ function AudioPlayer({ src, onEnded, playName, handleNext, handlePrevious }) {
         </div>
 
         <div className="controls">
-          <div className="prev" onClick={handlePrevious}>
+          <div
+            className="prev"
+            onClick={handlePrevious}
+            style={{ cursor: "pointer" }}
+          >
             <svg
               width="30"
               height="30"

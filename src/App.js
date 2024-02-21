@@ -9,20 +9,16 @@ function App() {
 
   useEffect(() => {
     const storedFiles = JSON.parse(localStorage.getItem("audioFiles")) || [];
-    console.log(storedFiles); // Return nothing
     setFiles(storedFiles);
   }, []);
 
   useEffect(() => {
-    // console.log("store...", files);
     localStorage.setItem("audioFiles", JSON.stringify(files));
   }, [files]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // setFiles((prevFiles) => [...prevFiles, file]);
-      // saveAudioFile([...files, file]);
       setFiles((prevFiles) => {
         const updatedFiles = [...prevFiles, file];
         localStorage.setItem("audioFiles", JSON.stringify(updatedFiles));
@@ -83,11 +79,11 @@ function App() {
               <header>
                 <h4>Select File here</h4>
               </header>
-              <p>Files Supported: MP3, MP4, M4A, WMA</p>
+              <p>Files Supported: MP3</p>
               <input
                 type="file"
                 hidden
-                accept=".mp3,.mp4,.m4a,.wma"
+                accept=".mp3"
                 id="fileID"
                 style={{ display: "none" }}
                 onChange={handleFileChange}
