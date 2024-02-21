@@ -59,7 +59,11 @@ function App() {
       <div id="boxes">
         {currentFile && (
           <>
-            <Playlist files={files} onFileSelected={handleFileSelected} />
+            <Playlist
+              files={files}
+              onFileSelected={handleFileSelected}
+              playName={currentFile}
+            />
             <AudioPlayer
               src={URL.createObjectURL(currentFile)}
               onEnded={handleFileEnded}

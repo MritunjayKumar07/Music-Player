@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import image from "../assert/music.png";
 
-function Playlist({ files, onFileSelected }) {
-  const [selectedIndex, setSelectedIndex] = useState(null);
+function Playlist({ files, onFileSelected, playName }) {
+  const [selectedIndex, setSelectedIndex] = useState(playName.name);
+  console.log("1", playName.name);
 
   return (
     <div id="player01" className="player">
