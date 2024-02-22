@@ -4,11 +4,19 @@ import Playlist from "./components/Playlist";
 import AudioPlayer from "./components/AudioPlayer";
 
 function App() {
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState(() => {
+    const apiData = localStorage.getItem("audioFiles");
+    if (apiData) {
+      return JSON.parse(apiData);
+    } else {
+      return [];
+    }
+  });
   const [currentFileIndex, setCurrentFileIndex] = useState(0);
 
   useEffect(() => {
-    const storedFiles = JSON.parse(localStorage.getItem("audioFiles")) || [];
+    const apiData = localStorage.getItem("audioFiles") || "[]";
+    const storedFiles = JSON.parse(apiData);
     setFiles(storedFiles);
   }, []);
 
@@ -19,11 +27,13 @@ function App() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setFiles((prevFiles) => {
-        const updatedFiles = [...prevFiles, file];
-        localStorage.setItem("audioFiles", JSON.stringify(updatedFiles));
-        return updatedFiles;
-      });
+      const fileWithObjectURL = {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        objectURL: URL.createObjectURL(file),
+      };
+      setFiles((prevFiles) => [...prevFiles, fileWithObjectURL]);
     }
   };
 
@@ -33,10 +43,9 @@ function App() {
   };
 
   const handleFileEnded = () => {
-    setCurrentFileIndex((prevIndex) => {
-      const nextIndex = prevIndex + 1;
-      return nextIndex < files.length ? nextIndex : 0;
-    });
+    setCurrentFileIndex((prevIndex) =>
+      prevIndex < files.length - 1 ? prevIndex + 1 : 0
+    );
   };
 
   const handlePrevious = () => {
@@ -64,7 +73,9 @@ function App() {
               playName={currentFile}
             />
             <AudioPlayer
-              src={URL.createObjectURL(currentFile)}
+              src={currentFile.objectURL}
+              type={currentFile.type}
+              name={currentFile.name}
               onEnded={handleFileEnded}
               playName={currentFile}
               handleNext={handleNext}

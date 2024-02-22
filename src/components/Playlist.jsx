@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import image from "../assert/music.png";
 
 function Playlist({ files, onFileSelected, playName }) {
-  const [selectedIndex, setSelectedIndex] = useState(playName.name);
+  const [selectedIndex, setSelectedIndex] = useState(
+    localStorage.getItem("currentAudioFiles") || playName.name
+  );
+
+  useEffect(() => {
+    localStorage.setItem("currentAudioFiles", selectedIndex);
+  }, [selectedIndex]);
 
   return (
     <div id="player01" className="player">

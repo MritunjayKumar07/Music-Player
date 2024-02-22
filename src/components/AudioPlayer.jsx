@@ -1,52 +1,26 @@
 import React, { useEffect, useState } from "react";
 import image from "../assert/music.png";
-import imagePlay from "../assert/play.png";
-import imageStop from "../assert/pause.png";
 
-function AudioPlayer({ src, onEnded, playName, handleNext, handlePrevious }) {
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const audioRef = React.createRef();
+function AudioPlayer({ name, handleNext, handlePrevious }) {
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = currentTime;
-      if (isPlaying) {
-        audioRef.current.play();
-      } else {
-        audioRef.current.pause();
-      }
+    const apiData = localStorage.getItem("audioFiles");
+    if (apiData) {
+      const allFiles = JSON.parse(apiData);
+      const selectedFile = allFiles.find(
+        (item) => item.name === localStorage.getItem("currentAudioFiles")
+      );
+      setFile(selectedFile);
     }
-  }, [src, currentTime, isPlaying]);
+  }, [name]);
 
-  const togglePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
-
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
-
-  const handleTimeUpdate = () => {
-    setCurrentTime(audioRef.current.currentTime);
-  };
-
-  const handleEnded = () => {
-    if (onEnded) {
-      onEnded();
-    }
-  };
-
-  const playAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-    }
-  };
-
-  const pauseAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
+  const Audio = () => {
+    return (
+      <audio controls autoPlay>
+        <source src={file.objectURL} type={file.type} />
+      </audio>
+    );
   };
 
   return (
@@ -55,7 +29,7 @@ function AudioPlayer({ src, onEnded, playName, handleNext, handlePrevious }) {
         <div className="info-wrapper">
           <img src={image} alt="music icon" style={{ marginRight: "16px" }} />
           <div className="info">
-            <h3>{playName && playName.name}</h3>
+            <h3>{name}</h3>
           </div>
         </div>
 
@@ -78,45 +52,7 @@ function AudioPlayer({ src, onEnded, playName, handleNext, handlePrevious }) {
               />
             </svg>
           </div>
-          <div
-            className="play"
-            onClick={togglePlayPause}
-            style={{ cursor: "pointer" }}
-          >
-            {isPlaying ? (
-              <img
-                alt="play"
-                style={{ height: "35px" }}
-                onClick={pauseAudio}
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAATElEQVR4nO3SsQ2AQAwEQbdC09coBTwNkN0TvJiRnDmxvDMAAHCkK/d6m137n3NAfKAjoUioI6FIqCOhSKgjoUioI6FI6OcJAQDANB4f136PNAKvpQAAAABJRU5ErkJggg=="
-              />
-            ) : (
-              <svg
-                onClick={playAudio}
-                width="35"
-                height="35"
-                viewBox="-2.4 -2.4 28.80 28.80"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                stroke="#1933f5"
-              >
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-
-                <g id="SVGRepo_iconCarrier">
-                  <path
-                    d="M21.4086 9.35258C23.5305 10.5065 23.5305 13.4935 21.4086 14.6474L8.59662 21.6145C6.53435 22.736 4 21.2763 4 18.9671L4 5.0329C4 2.72368 6.53435 1.26402 8.59661 2.38548L21.4086 9.35258Z"
-                    fill="#1933f5"
-                  />
-                </g>
-              </svg>
-            )}
-          </div>
+          <div className="play" style={{ cursor: "pointer" }}></div>
           <div
             className="next"
             onClick={handleNext}
@@ -149,14 +85,7 @@ function AudioPlayer({ src, onEnded, playName, handleNext, handlePrevious }) {
           </div>
         </div>
 
-        <div className="track-time">
-          <audio
-            ref={audioRef}
-            src={src}
-            onTimeUpdate={handleTimeUpdate}
-            onEnded={handleEnded}
-          />
-        </div>
+        <div className="track-time">{file ? <Audio /> : null};</div>
       </div>
     </div>
   );
