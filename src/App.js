@@ -48,18 +48,6 @@ function App() {
     );
   };
 
-  const handlePrevious = () => {
-    setCurrentFileIndex((prevIndex) =>
-      prevIndex > 0 ? prevIndex - 1 : files.length - 1
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentFileIndex((prevIndex) =>
-      prevIndex < files.length - 1 ? prevIndex + 1 : 0
-    );
-  };
-
   const currentFile = files[currentFileIndex];
 
   return (
@@ -78,8 +66,6 @@ function App() {
               name={currentFile.name}
               onEnded={handleFileEnded}
               playName={currentFile}
-              handleNext={handleNext}
-              handlePrevious={handlePrevious}
             />
           </>
         )}
